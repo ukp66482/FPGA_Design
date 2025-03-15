@@ -100,7 +100,12 @@ always @(posedge clk_div or posedge rst)
         endcase
 
 wire [3:0] remain;
-normal switch_00( .clk(clk_div), .rst(rst), .R_G_time(G_time), .R_Y_time(Y_time), .R_R_time(R_time), .T1(normal_T1), .T2(normal_T2), .remain(remain));
+wire rst_normal;
+assign rst_normal = (sw!=2'b00) ?  1'b1 : 1'b0;
+
+wire rst_to_normal;
+assign rst_to_normal = rst_normal | rst;
+normal switch_00( .clk(clk_div), .rst(rst_to_normal), .R_G_time(G_time), .R_Y_time(Y_time), .R_R_time(R_time), .T1(normal_T1), .T2(normal_T2), .remain(remain));
 
 
 //leds
